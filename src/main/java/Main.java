@@ -1,3 +1,4 @@
+import exception.OutOfRangeException;
 import place.CarPark;
 import vehicle.DriverlessCar;
 
@@ -64,6 +65,7 @@ public class Main {
 
         //Move the car
         while (true){
+            System.out.println("Let's move the car.");
             System.out.println("Would you like to turn the car clockwise? 0=No, 1=Yes.");
             String turnOriInput = scanner.nextLine();
             if(isInt(turnOriInput)){
@@ -81,7 +83,25 @@ public class Main {
             } else {
                 System.out.println("Wrong format. Please input again.");
             }
-
+            System.out.println("How many steps would you like to move?");
+            String stepsInput = scanner.nextLine();
+            if(isInt(stepsInput)){
+                try {
+                    int steps = Integer.parseInt(stepsInput);
+                    driverlessCar.move(carPark.getxAxisDimension(), carPark.getyAxisDimension(), steps);
+                } catch (OutOfRangeException e) {
+                    e.printStackTrace();
+                    if(driverlessCar.getPositionX() > carPark.getyAxisDimension()){
+                        driverlessCar.getPositionX()-=Integer.parseInt(stepsInput);
+                    } else if (driverlessCar.getPositionX() < 0){
+                        driverlessCar.getPositionX()+=steps;
+                    } else if (driverlessCar.getPositionY() > carPark.getyAxisDimension()){
+                        driverlessCar.getPositionY()-=step
+                    }
+                }
+            } else {
+                System.out.println("Wrong format. Please input again.");
+            }
         }
 
     }

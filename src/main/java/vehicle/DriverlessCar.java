@@ -1,13 +1,28 @@
 package vehicle;
 
+import exception.OutOfRangeException;
+
 public class DriverlessCar implements Car{
 
     private int orientation;
     private int positionX;
     private int positionY;
 
-    public void move(String command) {
-
+    public void move(int xAxisDimension, int yAxisDimension, int steps) throws OutOfRangeException {
+        switch (orientation){
+            case 1:
+                positionY+=steps;
+            case 2:
+                positionX+=steps;
+            case 3:
+                positionY-=steps;
+            case 4:
+                positionX-=steps;
+        }
+        if(positionX > xAxisDimension || positionX <= 0 ||
+                positionY > yAxisDimension || positionY <= 0){
+            throw new OutOfRangeException();
+        }
     }
 
     public void turnClockwise(){
