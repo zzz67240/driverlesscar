@@ -6,13 +6,14 @@ import java.util.Scanner;
 
 public class Main {
 
+    @SuppressWarnings("InfiniteLoopStatement")
     public static void main(String[] args){
 
         Scanner scanner = new Scanner(System.in);
         CarPark carPark = new CarPark();
         DriverlessCar driverlessCar = new DriverlessCar();
 
-        //Set dimension of the car park
+        //Set dimension for the car park
         System.out.println("Let's set the dimension of the car park first.");
         while (true){
             System.out.println("Please input the X axis dimension:");
@@ -37,20 +38,20 @@ public class Main {
             String xInput = scanner.nextLine();
             System.out.println("Please input the Y coordinate:");
             String yInput = scanner.nextLine();
-            System.out.println("Where is the car facing to? 1=North, 2=East, 3=South, 4=West. ");
-            String orientationInput = scanner.nextLine();
-            if(isInt(xInput) && isInt(yInput) && isInt(orientationInput)){
+            System.out.println("Where is the car facing to? 0=North, 1=East, 2=South, 3=West. ");
+            String oriInput = scanner.nextLine();
+            if(isInt(xInput) && isInt(yInput) && isInt(oriInput)){
                 int x = Integer.parseInt(xInput);
                 int y = Integer.parseInt(yInput);
-                int o = Integer.parseInt(orientationInput);
+                int o = Integer.parseInt(oriInput);
                 if(x > 0 && x <= carPark.getxAxisDimension() &&
                         y > 0 && y <= carPark.getyAxisDimension()){
-                    if(o >= 1 && o <= 4){
+                    if(o >= 0 && o <= 3){
                         driverlessCar.setPositionX(x);
                         driverlessCar.setPositionY(y);
                         driverlessCar.setOrientation(o);
-                        System.out.println("Car is place at: " + driverlessCar.getPositionX() + ", " + driverlessCar.getPositionY()
-                                + " and facing: " + driverlessCar.getOrientation());
+                        System.out.println("Car is placed at: " + driverlessCar.getPositionX() + ", " + driverlessCar.getPositionY()
+                                + " and facing: " + driverlessCar.getOrientationString());
                         break;
                     } else {
                         System.out.println("Incorrect orientation. Please input again.");
@@ -68,42 +69,59 @@ public class Main {
             System.out.println("Let's move the car.");
             System.out.println("Would you like to turn the car clockwise? 0=No, 1=Yes.");
             String turnOriInput = scanner.nextLine();
+            int oriSwitch = 0;
             if(isInt(turnOriInput)){
                 switch (Integer.parseInt(turnOriInput)){
                     case 0:
-                        System.out.println("Keep current orientation.");
+                        System.out.println("Keep current orientation: " + driverlessCar.getOrientationString());
                         break;
                     case 1:
                         driverlessCar.turnClockwise();
-                        System.out.println("Turn the car clockwise, it's facing: " + driverlessCar.getOrientation());
+                        oriSwitch = 1;
+                        System.out.println("Turn the car clockwise, it's facing: " + driverlessCar.getOrientationString());
                         break;
                     default:
                         System.out.println("Wrong input range. Please input again.");
+                        continue;
                 }
             } else {
                 System.out.println("Wrong format. Please input again.");
+                continue;
             }
             System.out.println("How many steps would you like to move?");
             String stepsInput = scanner.nextLine();
-            if(isInt(stepsInput)){
+            if(isInt(stepsInput) && Integer.parseInt(stepsInput) >= 0){
                 try {
-                    int steps = Integer.parseInt(stepsInput);
-                    driverlessCar.move(carPark.getxAxisDimension(), carPark.getyAxisDimension(), steps);
+                    driverlessCar.move(carPark.getxAxisDimension(), carPark.getyAxisDimension(), Integer.parseInt(stepsInput));
                 } catch (OutOfRangeException e) {
                     e.printStackTrace();
+                    //As this app is for demonstration, so we catch the exception and printStackTrace but keep the program running.
+                    //It can stop the program by uncommenting "break;" and commenting out the following paragraph in catch block.
+                    //break;
                     if(driverlessCar.getPositionX() > carPark.getyAxisDimension()){
-                        driverlessCar.getPositionX()-=Integer.parseInt(stepsInput);
-                    } else if (driverlessCar.getPositionX() < 0){
-                        driverlessCar.getPositionX()+=steps;
+                        driverlessCar.setPositionX(driverlessCar.getPositionX() - Integer.parseInt(stepsInput));
+                    } else if (driverlessCar.getPositionX() <= 0){
+                        driverlessCar.setPositionX(driverlessCar.getPositionX() + Integer.parseInt(stepsInput));
                     } else if (driverlessCar.getPositionY() > carPark.getyAxisDimension()){
-                        driverlessCar.getPositionY()-=step
+                        driverlessCar.setPositionY(driverlessCar.getPositionY() - Integer.parseInt(stepsInput));
+                    } else {
+                        driverlessCar.setPositionY(driverlessCar.getPositionY() + Integer.parseInt(stepsInput));
                     }
+                    if(oriSwitch == 1){
+                        driverlessCar.turnCounterclockwise();
+                    }
+                    System.out.println("The car is out of car park range. We've moved the car back.");
                 }
             } else {
-                System.out.println("Wrong format. Please input again.");
+                if(oriSwitch == 1){
+                    driverlessCar.turnCounterclockwise();
+                }
+                System.out.println("Wrong format or input range. Please input again.");
             }
+            System.out.println("Current location of the car is: " + driverlessCar.getPositionX() + ", " + driverlessCar.getPositionY()
+                    + ". And it's facing: " + driverlessCar.getOrientationString());
+            System.out.println("The dimension of the car park is: " + carPark.getxAxisDimension() + ", " + carPark.getyAxisDimension());
         }
-
     }
 
     private static boolean isInt(String string){
@@ -115,5 +133,4 @@ public class Main {
             return false;
         }
     }
-
 }

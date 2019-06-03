@@ -10,14 +10,18 @@ public class DriverlessCar implements Car{
 
     public void move(int xAxisDimension, int yAxisDimension, int steps) throws OutOfRangeException {
         switch (orientation){
-            case 1:
+            case 0:
                 positionY+=steps;
-            case 2:
+                break;
+            case 1:
                 positionX+=steps;
-            case 3:
+                break;
+            case 2:
                 positionY-=steps;
-            case 4:
+                break;
+            case 3:
                 positionX-=steps;
+                break;
         }
         if(positionX > xAxisDimension || positionX <= 0 ||
                 positionY > yAxisDimension || positionY <= 0){
@@ -27,20 +31,31 @@ public class DriverlessCar implements Car{
 
     public void turnClockwise(){
         orientation++;
-        if(orientation > 4){
-            orientation = 1;
+        if(orientation > 3){
+            orientation = 0;
         }
     }
 
-    public String getOrientation() {
+    public void turnCounterclockwise(){
+        orientation--;
+        if(orientation < 0){
+            orientation = 3;
+        }
+    }
+
+    public int getOrientation(){
+        return orientation;
+    }
+
+    public String getOrientationString() {
         switch (orientation){
-            case 1:
+            case 0:
                 return "North";
-            case 2:
+            case 1:
                 return "East";
-            case 3:
+            case 2:
                 return "South";
-            case 4:
+            case 3:
                 return "West";
         }
         return null;
