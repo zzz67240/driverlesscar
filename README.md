@@ -8,7 +8,7 @@ Introduction:
 5. Move the car with:
     (1.) Turn clockwise or not. 
     (2.) Steps to move forward.
-6. This app will catch usual operating errors.
+6. This app will catch common operating errors.
 7. For better demonstration, this app will not interupt when catching exception ifthe car goes out of the car park range, it will move the car back to the last position.
 
 Due to it's a coding test, we don't show too much detail here, but it should meet following acceptance criteria:
