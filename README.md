@@ -1,4 +1,6 @@
 Coding Test: Driverless Car
+Author: Xin Yang
+Version: 1.0
 
 Introduction:
 1. This tiny app is designed as the concept of driverless car.
