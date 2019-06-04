@@ -1,6 +1,7 @@
 package vehicle;
 
 import exception.OutOfRangeException;
+import parameter.Orientation;
 
 public class DriverlessCar implements Car{
 
@@ -50,13 +51,13 @@ public class DriverlessCar implements Car{
     public String getOrientationString() {
         switch (orientation){
             case 0:
-                return "North";
+                return Orientation.NORTH.toString();
             case 1:
-                return "East";
+                return Orientation.EAST.toString();
             case 2:
-                return "South";
+                return Orientation.SOUTH.toString();
             case 3:
-                return "West";
+                return Orientation.WEST.toString();
         }
         return null;
     }
